@@ -68,7 +68,7 @@ export function Sidebar({ logoUrl, hotelName = "HotelFlow Register", ownerName }
         <div>
           {/* Brand Header */}
           <div className={cn("h-16 flex items-center border-b border-slate-100 dark:border-slate-800/80 transition-all duration-300", isCollapsed ? "justify-center px-2" : "px-5")}>
-            <HotelFlowLogo size="sm" showText={!isCollapsed} logoUrl={logoUrl} />
+            <HotelFlowLogo size="sm" showText={!isCollapsed} />
           </div>
 
           {/* Categorized Navigation Links */}

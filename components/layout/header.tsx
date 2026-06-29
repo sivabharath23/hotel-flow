@@ -17,11 +17,7 @@ export function Header({ hotelName = "My Hotel", hotelType = "Hotel", logoUrl }:
     <header className="h-16 sticky top-0 z-30 bg-white/90 dark:bg-slate-900/90 backdrop-blur-md border-b border-slate-200/80 dark:border-slate-800 px-4 md:px-6 flex items-center justify-between shadow-xs">
       <div className="flex items-center gap-3">
         <div className="md:hidden w-8 h-8 rounded-xl bg-blue-600 text-white flex items-center justify-center font-bold shadow-xs shrink-0 overflow-hidden">
-          {logoUrl ? (
-            <img src={logoUrl} alt={hotelName} className="w-full h-full object-cover" />
-          ) : (
-            <Building2 className="w-4 h-4" />
-          )}
+          <Building2 className="w-4 h-4" />
         </div>
         <div>
           <h1 className="text-base md:text-lg font-black text-slate-900 dark:text-white tracking-tight leading-none">

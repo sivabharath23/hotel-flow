@@ -4,7 +4,6 @@ import { redirect } from "next/navigation";
 import { Header } from "@/components/layout/header";
 import { Sidebar } from "@/components/layout/sidebar";
 import { BottomNav } from "@/components/layout/bottom-nav";
-import { DynamicAppIcon } from "@/components/ui/dynamic-app-icon";
 
 export default async function DashboardLayout({
   children,
@@ -24,10 +23,9 @@ export default async function DashboardLayout({
 
   return (
     <div className="min-h-screen flex bg-slate-50 dark:bg-slate-950">
-      <DynamicAppIcon logoUrl={hotel?.logoUrl} />
       <Sidebar logoUrl={hotel?.logoUrl} hotelName={hotel?.name} ownerName={hotel?.owner} />
       <div className="flex-1 flex flex-col min-w-0 pb-20 md:pb-6">
-        <Header hotelName={hotel?.name} hotelType={hotel?.hotelType} logoUrl={hotel?.logoUrl} />
+        <Header hotelName={hotel?.name} hotelType={hotel?.hotelType} />
         <main className="flex-1 p-3 md:p-5 max-w-7xl mx-auto w-full">
           {children}
         </main>
