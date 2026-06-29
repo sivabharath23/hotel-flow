@@ -19,16 +19,16 @@ export default async function DashboardLayout({
 
   const hotel = await prisma.hotel.findUnique({
     where: { id: session.hotelId },
-    select: { name: true, hotelType: true, logoUrl: true },
+    select: { name: true, hotelType: true, logoUrl: true, owner: true },
   });
 
   return (
     <div className="min-h-screen flex bg-slate-50 dark:bg-slate-950">
       <DynamicAppIcon logoUrl={hotel?.logoUrl} />
-      <Sidebar logoUrl={hotel?.logoUrl} />
+      <Sidebar logoUrl={hotel?.logoUrl} hotelName={hotel?.name} ownerName={hotel?.owner} />
       <div className="flex-1 flex flex-col min-w-0 pb-20 md:pb-6">
         <Header hotelName={hotel?.name} hotelType={hotel?.hotelType} logoUrl={hotel?.logoUrl} />
-        <main className="flex-1 p-4 md:p-8 max-w-7xl mx-auto w-full">
+        <main className="flex-1 p-3 md:p-5 max-w-7xl mx-auto w-full">
           {children}
         </main>
         <BottomNav />

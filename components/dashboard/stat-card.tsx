@@ -66,7 +66,7 @@ export function StatCard({
   return (
     <div
       className={cn(
-        "bg-white dark:bg-slate-900 rounded-2xl p-4 border shadow-xs hover:shadow-md transition-all duration-200 flex flex-col justify-between relative overflow-hidden group",
+        "bg-white dark:bg-slate-900 rounded-2xl p-3.5 border shadow-xs hover:shadow-md transition-all duration-200 flex flex-col justify-between relative overflow-hidden group",
         colorStyles.border
       )}
     >

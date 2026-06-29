@@ -49,7 +49,7 @@ export function DashboardView({ financials, closingInfo, currency, recentSales, 
   return (
     <div className="space-y-5 animate-in fade-in duration-200">
       {/* Top Banner & Quick Actions - Compact SaaS Style */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 bg-gradient-to-r from-blue-600 to-indigo-700 text-white rounded-2xl p-5 shadow-sm">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 bg-gradient-to-r from-blue-600 to-indigo-700 text-white rounded-2xl p-3.5 md:p-4 shadow-sm">
         <div>
           <span className="inline-block px-2.5 py-0.5 bg-white/20 backdrop-blur-md rounded-full text-[10px] font-bold uppercase tracking-wider mb-1">
             Live Daily Register
@@ -170,7 +170,7 @@ export function DashboardView({ financials, closingInfo, currency, recentSales, 
       {/* Recent Transactions Split Section */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
         {/* Sales List */}
-        <div className="bg-white dark:bg-slate-900 rounded-2xl p-4 border border-slate-200/80 dark:border-slate-800 shadow-xs">
+        <div className="bg-white dark:bg-slate-900 rounded-2xl p-3.5 border border-slate-200/80 dark:border-slate-800 shadow-xs">
           <div className="flex items-center justify-between mb-3">
             <div className="flex items-center gap-2">
               <div className="p-1.5 rounded-lg bg-emerald-50 dark:bg-emerald-950 text-emerald-600">
@@ -204,7 +204,7 @@ export function DashboardView({ financials, closingInfo, currency, recentSales, 
         </div>
 
         {/* Expenses List */}
-        <div className="bg-white dark:bg-slate-900 rounded-2xl p-4 border border-slate-200/80 dark:border-slate-800 shadow-xs">
+        <div className="bg-white dark:bg-slate-900 rounded-2xl p-3.5 border border-slate-200/80 dark:border-slate-800 shadow-xs">
           <div className="flex items-center justify-between mb-3">
             <div className="flex items-center gap-2">
               <div className="p-1.5 rounded-lg bg-rose-50 dark:bg-rose-950 text-rose-600">

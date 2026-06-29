@@ -48,7 +48,7 @@ export function ClosingView({ expectedCash, existingClosing, currency }: Closing
   return (
     <div className="max-w-3xl mx-auto space-y-6 animate-in fade-in duration-300">
       {/* Top Card */}
-      <div className="bg-white dark:bg-slate-900 rounded-3xl p-6 md:p-8 border border-slate-200/80 dark:border-slate-800 shadow-card">
+      <div className="bg-white dark:bg-slate-900 rounded-3xl p-4 md:p-6 border border-slate-200/80 dark:border-slate-800 shadow-card">
         <div className="flex items-center gap-3.5 mb-6">
           <div className="p-3.5 rounded-2xl bg-purple-50 dark:bg-purple-950 text-purple-600 dark:text-purple-400">
             <Lock className="w-7 h-7" />

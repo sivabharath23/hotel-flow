@@ -170,7 +170,7 @@ export function ReportsView({ initialData, currency }: ReportsViewProps) {
   return (
     <div className="space-y-4 animate-in fade-in duration-200">
       {/* Top Header & Range Filters */}
-      <div className="bg-white dark:bg-slate-900 rounded-2xl p-4 border border-slate-200/80 dark:border-slate-800 shadow-xs flex flex-col md:flex-row md:items-center justify-between gap-3">
+      <div className="bg-white dark:bg-slate-900 rounded-2xl p-3.5 border border-slate-200/80 dark:border-slate-800 shadow-xs flex flex-col md:flex-row md:items-center justify-between gap-3">
         <div className="flex items-center gap-2.5">
           <div className="p-2 rounded-xl bg-blue-50 dark:bg-blue-950 text-blue-600">
             <BarChart3 className="w-5 h-5" />
@@ -257,28 +257,28 @@ export function ReportsView({ initialData, currency }: ReportsViewProps) {
 
       {/* Summary Stat Bar */}
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-3">
-        <div className="bg-white dark:bg-slate-900 p-4 rounded-2xl border border-slate-200/80 dark:border-slate-800 shadow-xs">
+        <div className="bg-white dark:bg-slate-900 p-3.5 rounded-2xl border border-slate-200/80 dark:border-slate-800 shadow-xs">
           <span className="text-[10px] font-bold uppercase text-slate-400">Period Sales</span>
           <p className="text-lg md:text-xl font-black text-emerald-600 dark:text-emerald-400 mt-0.5">
             {formatCurrency(summary.totalSales, currency)}
           </p>
         </div>
 
-        <div className="bg-white dark:bg-slate-900 p-4 rounded-2xl border border-slate-200/80 dark:border-slate-800 shadow-xs">
+        <div className="bg-white dark:bg-slate-900 p-3.5 rounded-2xl border border-slate-200/80 dark:border-slate-800 shadow-xs">
           <span className="text-[10px] font-bold uppercase text-slate-400">Period Expenses</span>
           <p className="text-lg md:text-xl font-black text-rose-600 dark:text-rose-400 mt-0.5">
             {formatCurrency(summary.totalExpenses, currency)}
           </p>
         </div>
 
-        <div className="bg-white dark:bg-slate-900 p-4 rounded-2xl border border-slate-200/80 dark:border-slate-800 shadow-xs">
+        <div className="bg-white dark:bg-slate-900 p-3.5 rounded-2xl border border-slate-200/80 dark:border-slate-800 shadow-xs">
           <span className="text-[10px] font-bold uppercase text-slate-400">Net Profit</span>
           <p className={`text-lg md:text-xl font-black mt-0.5 ${summary.profit >= 0 ? "text-blue-600" : "text-rose-600"}`}>
             {formatCurrency(summary.profit, currency)}
           </p>
         </div>
 
-        <div className="bg-white dark:bg-slate-900 p-4 rounded-2xl border border-slate-200/80 dark:border-slate-800 shadow-xs">
+        <div className="bg-white dark:bg-slate-900 p-3.5 rounded-2xl border border-slate-200/80 dark:border-slate-800 shadow-xs">
           <span className="text-[10px] font-bold uppercase text-slate-400">Period ROI %</span>
           <p className="text-lg md:text-xl font-black text-amber-600 dark:text-amber-400 mt-0.5">
             {summary.roi}%
@@ -289,7 +289,7 @@ export function ReportsView({ initialData, currency }: ReportsViewProps) {
       {/* Charts Split Grid */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
         {/* Daily Sales & Profit Bar Chart */}
-        <div className="bg-white dark:bg-slate-900 rounded-2xl p-4 border border-slate-200/80 dark:border-slate-800 shadow-xs">
+        <div className="bg-white dark:bg-slate-900 rounded-2xl p-3.5 border border-slate-200/80 dark:border-slate-800 shadow-xs">
           <h3 className="font-bold text-slate-900 dark:text-white text-sm mb-3 flex items-center gap-2">
             <TrendingUp className="w-4 h-4 text-blue-600" /> Daily Revenue vs Outflow Trend
           </h3>
@@ -311,7 +311,7 @@ export function ReportsView({ initialData, currency }: ReportsViewProps) {
         </div>
 
         {/* Expense Breakdown Pie Chart */}
-        <div className="bg-white dark:bg-slate-900 rounded-2xl p-4 border border-slate-200/80 dark:border-slate-800 shadow-xs">
+        <div className="bg-white dark:bg-slate-900 rounded-2xl p-3.5 border border-slate-200/80 dark:border-slate-800 shadow-xs">
           <h3 className="font-bold text-slate-900 dark:text-white text-sm mb-3 flex items-center gap-2">
             <PieChartIcon className="w-4 h-4 text-rose-600" /> Expense Category Distribution
           </h3>

@@ -98,7 +98,7 @@ export function ExpensesView({ expenses, currency }: ExpensesViewProps) {
   return (
     <div className="space-y-4 animate-in fade-in duration-200">
       {/* Header Summary - Compact */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 bg-white dark:bg-slate-900 rounded-2xl p-4 border border-slate-200/80 dark:border-slate-800 shadow-xs">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 bg-white dark:bg-slate-900 rounded-2xl p-3.5 border border-slate-200/80 dark:border-slate-800 shadow-xs">
         <div>
           <div className="flex items-center gap-2">
             <div className="p-2 rounded-xl bg-rose-50 dark:bg-rose-950 text-rose-600">
