@@ -46,7 +46,7 @@ export function PWAInstaller() {
   if (!showBanner) return null;
 
   return (
-    <div className="fixed bottom-16 md:bottom-6 right-4 left-4 md:left-auto md:w-96 z-50 bg-slate-900 text-white p-4 rounded-2xl shadow-2xl border border-slate-700 animate-in slide-in-from-bottom-5 duration-300 flex items-center justify-between gap-3">
+    <div className="fixed bottom-20 md:bottom-6 right-4 left-4 md:left-auto md:w-96 z-50 bg-slate-900 text-white p-4 rounded-2xl shadow-2xl border border-slate-700 animate-in slide-in-from-bottom-5 duration-300 flex items-center justify-between gap-3">
       <div className="flex items-center gap-3">
         <div className="w-10 h-10 rounded-xl bg-blue-600 flex items-center justify-center shrink-0">
           <Smartphone className="w-5 h-5 text-white" />
