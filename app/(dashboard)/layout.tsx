@@ -25,7 +25,7 @@ export default async function DashboardLayout({
     <div className="h-screen w-full flex overflow-hidden bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-slate-100">
       <Sidebar logoUrl={hotel?.logoUrl} hotelName={hotel?.name} ownerName={hotel?.owner} />
       <div className="flex-1 flex flex-col h-full min-w-0 overflow-hidden relative">
-        <Header hotelName={hotel?.name} hotelType={hotel?.hotelType} />
+        <Header hotelName={hotel?.name} hotelType={hotel?.hotelType} logoUrl={hotel?.logoUrl} ownerName={hotel?.owner} />
         <main className="flex-1 overflow-y-auto p-3 md:p-5 pb-28 md:pb-8 scroll-smooth">
           <div className="max-w-7xl mx-auto w-full space-y-5">
             {children}
