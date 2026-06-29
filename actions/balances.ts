@@ -64,7 +64,7 @@ export async function recordClosingBalance(actualCash: number, notes?: string, d
   const startOfDay = new Date(targetDate + "T00:00:00.000Z");
   const endOfDay = new Date(targetDate + "T23:59:59.999Z");
 
-  const [openingObj, sales, expenses] = await Promise.all([
+  const [openingObj, sales, expenses, investments] = await Promise.all([
     prisma.openingBalance.findUnique({
       where: { hotelId_date: { hotelId: session.hotelId, date: targetDate } },
     }),
@@ -80,10 +80,16 @@ export async function recordClosingBalance(actualCash: number, notes?: string, d
         createdAt: { gte: startOfDay, lte: endOfDay },
       },
     }),
+    prisma.investment.findMany({
+      where: {
+        hotelId: session.hotelId,
+        createdAt: { gte: startOfDay, lte: endOfDay },
+      },
+    }),
   ]);
 
   const openingBalance = openingObj?.amount || 0;
-  const financials = calculateFinancials({ openingBalance, sales, expenses });
+  const financials = calculateFinancials({ openingBalance, sales, expenses, investments });
   const expectedCash = financials.cashInHand;
   const difference = actualCash - expectedCash;
 

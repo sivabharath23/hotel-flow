@@ -15,6 +15,7 @@ import {
   LogOut,
   PanelLeftClose,
   PanelLeftOpen,
+  Coins,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { logoutHotel } from "@/actions/auth";
@@ -23,6 +24,7 @@ const NAV_ITEMS = [
   { label: "Dashboard", href: "/dashboard", icon: LayoutDashboard, category: "MAIN" },
   { label: "Sales Entry", href: "/sales", icon: TrendingUp, category: "FINANCES" },
   { label: "Expense Entry", href: "/expenses", icon: TrendingDown, category: "FINANCES" },
+  { label: "Investments", href: "/investments", icon: Coins, category: "FINANCES" },
   { label: "Daily Closing", href: "/closing", icon: Lock, category: "FINANCES" },
   { label: "Financial Reports", href: "/reports", icon: BarChart3, category: "MANAGEMENT" },
   { label: "Hotel Profile", href: "/profile", icon: User, category: "MANAGEMENT" },

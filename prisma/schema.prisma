@@ -25,6 +25,7 @@ model Hotel {
   updatedAt       DateTime         @updatedAt
   sales           Sale[]
   expenses        Expense[]
+  investments     Investment[]
   openingBalances OpeningBalance[]
   closingBalances ClosingBalance[]
   dailySummaries  DailySummary[]
@@ -49,6 +50,19 @@ model Expense {
   hotel         Hotel    @relation(fields: [hotelId], references: [id], onDelete: Cascade)
   amount        Float
   category      String   // VEGETABLES, MILK, GAS, CHICKEN, SALARY, ELECTRICITY, MISC
+  paymentMethod String   // CASH, UPI, CARD, BANK
+  description   String?
+  createdAt     DateTime @default(now())
+
+  @@index([hotelId, createdAt])
+}
+
+model Investment {
+  id            String   @id @default(cuid())
+  hotelId       String
+  hotel         Hotel    @relation(fields: [hotelId], references: [id], onDelete: Cascade)
+  amount        Float
+  source        String   // OWNER_CAPITAL, BANK_LOAN, PARTNER_INJECTION, OTHER
   paymentMethod String   // CASH, UPI, CARD, BANK
   description   String?
   createdAt     DateTime @default(now())

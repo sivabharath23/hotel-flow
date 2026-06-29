@@ -7,6 +7,8 @@ export interface DailyFinancials {
   bankSales: number;
   totalExpenses: number;
   cashExpenses: number;
+  totalInvestments: number;
+  cashInvestments: number;
   cashInHand: number;
   profit: number;
   roi: number;
@@ -16,10 +18,12 @@ export function calculateFinancials({
   openingBalance = 0,
   sales = [],
   expenses = [],
+  investments = [],
 }: {
   openingBalance: number;
   sales: Array<{ amount: number; paymentMethod: string }>;
   expenses: Array<{ amount: number; paymentMethod: string }>;
+  investments?: Array<{ amount: number; paymentMethod: string }>;
 }): DailyFinancials {
   const totalSales = sales.reduce((sum, item) => sum + item.amount, 0);
   const cashSales = sales
@@ -40,7 +44,12 @@ export function calculateFinancials({
     .filter((e) => e.paymentMethod === "CASH")
     .reduce((sum, item) => sum + item.amount, 0);
 
-  const cashInHand = openingBalance + cashSales - cashExpenses;
+  const totalInvestments = investments.reduce((sum, item) => sum + item.amount, 0);
+  const cashInvestments = investments
+    .filter((i) => i.paymentMethod === "CASH")
+    .reduce((sum, item) => sum + item.amount, 0);
+
+  const cashInHand = openingBalance + cashSales + cashInvestments - cashExpenses;
   const profit = totalSales - totalExpenses;
 
   let roi = 0;
@@ -59,6 +68,8 @@ export function calculateFinancials({
     bankSales,
     totalExpenses,
     cashExpenses,
+    totalInvestments,
+    cashInvestments,
     cashInHand,
     profit,
     roi,

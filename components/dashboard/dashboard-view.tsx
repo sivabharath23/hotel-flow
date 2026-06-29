@@ -15,7 +15,7 @@ import {
   PieChart,
   PlusCircle,
   MinusCircle,
-  ArrowRight,
+  Coins,
 } from "lucide-react";
 
 interface DashboardViewProps {
@@ -28,6 +28,8 @@ interface DashboardViewProps {
     bankSales: number;
     totalExpenses: number;
     cashExpenses: number;
+    totalInvestments: number;
+    cashInvestments: number;
     cashInHand: number;
     profit: number;
     roi: number;
@@ -62,25 +64,32 @@ export function DashboardView({ financials, closingInfo, currency, recentSales, 
           </p>
         </div>
 
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-2 flex-wrap sm:flex-nowrap">
           <Link
             href="/sales"
-            className="py-2.5 px-4 rounded-xl bg-white text-blue-700 font-bold text-xs shadow-xs hover:bg-blue-50 transition-all flex items-center gap-1.5"
+            className="py-2 px-3 rounded-xl bg-white text-blue-700 font-bold text-xs shadow-xs hover:bg-blue-50 transition-all flex items-center gap-1"
           >
-            <PlusCircle className="w-4 h-4 text-emerald-600" />
-            <span>+ Add Sale</span>
+            <PlusCircle className="w-3.5 h-3.5 text-emerald-600" />
+            <span>+ Sale</span>
           </Link>
           <Link
             href="/expenses"
-            className="py-2.5 px-4 rounded-xl bg-blue-800/80 hover:bg-blue-800 text-white font-bold text-xs transition-all flex items-center gap-1.5 border border-blue-500/30"
+            className="py-2 px-3 rounded-xl bg-blue-800/80 hover:bg-blue-800 text-white font-bold text-xs transition-all flex items-center gap-1 border border-blue-500/30"
           >
-            <MinusCircle className="w-4 h-4 text-rose-400" />
-            <span>- Add Expense</span>
+            <MinusCircle className="w-3.5 h-3.5 text-rose-400" />
+            <span>- Expense</span>
+          </Link>
+          <Link
+            href="/investments"
+            className="py-2 px-3 rounded-xl bg-emerald-500/90 hover:bg-emerald-500 text-white font-bold text-xs transition-all flex items-center gap-1 border border-emerald-400/30"
+          >
+            <Coins className="w-3.5 h-3.5 text-amber-300" />
+            <span>+ Capital</span>
           </Link>
         </div>
       </div>
 
-      {/* 7 Financial Stat Cards Grid - Compact */}
+      {/* 8 Financial Stat Cards Grid - Compact */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 md:gap-4">
         <StatCard
           title="Opening Balance"
@@ -120,8 +129,18 @@ export function DashboardView({ financials, closingInfo, currency, recentSales, 
         />
 
         <StatCard
+          title="Investments Inflow"
+          subtitle="Capital & Injections"
+          amount={financials.totalInvestments}
+          currencySymbol={currency}
+          icon={Coins}
+          colorScheme="amber"
+          trendText={`Cash In: ${formatCurrency(financials.cashInvestments, currency)}`}
+        />
+
+        <StatCard
           title="Cash In Hand"
-          subtitle="Opening + Cash Sales - Exp"
+          subtitle="Opening + Sales + Capital - Exp"
           amount={financials.cashInHand}
           currencySymbol={currency}
           icon={Building}
@@ -153,96 +172,21 @@ export function DashboardView({ financials, closingInfo, currency, recentSales, 
           currencySymbol={currency}
           icon={LineChart}
           colorScheme={financials.profit >= 0 ? "emerald" : "rose"}
-          trendText={financials.profit >= 0 ? "Net Gain Today" : "Net Loss Today"}
+          trendText={financials.profit >= 0 ? "Net Gain" : "Net Loss"}
         />
 
         <StatCard
           title="ROI %"
-          subtitle="(Profit / Expenses) × 100"
+          subtitle="Return on Investment"
           amount={financials.roi}
-          isCurrency={false}
+          currencySymbol="%"
           icon={PieChart}
-          colorScheme="amber"
-          trendText="Return on investment"
+          colorScheme={financials.roi >= 0 ? "blue" : "rose"}
+          trendText="Margin Return Rate"
         />
       </div>
 
-      {/* Recent Transactions Split Section */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
-        {/* Sales List */}
-        <div className="bg-white dark:bg-slate-900 rounded-2xl p-3.5 border border-slate-200/80 dark:border-slate-800 shadow-xs">
-          <div className="flex items-center justify-between mb-3">
-            <div className="flex items-center gap-2">
-              <div className="p-1.5 rounded-lg bg-emerald-50 dark:bg-emerald-950 text-emerald-600">
-                <TrendingUp className="w-4 h-4" />
-              </div>
-              <h3 className="font-bold text-slate-900 dark:text-white text-sm">Recent Sales Entries</h3>
-            </div>
-            <Link href="/sales" className="text-xs font-bold text-blue-600 hover:underline flex items-center gap-1">
-              <span>View All</span>
-              <ArrowRight className="w-3 h-3" />
-            </Link>
-          </div>
-
-          <div className="space-y-2">
-            {recentSales.length === 0 ? (
-              <p className="text-xs text-slate-400 text-center py-4">No sales recorded today yet.</p>
-            ) : (
-              recentSales.slice(0, 4).map((sale) => (
-                <div key={sale.id} className="flex items-center justify-between p-2.5 rounded-xl bg-slate-50 dark:bg-slate-800/50">
-                  <div>
-                    <p className="text-xs font-bold text-slate-900 dark:text-white">{sale.description || "Sale Entry"}</p>
-                    <span className="text-[10px] font-semibold text-slate-400 uppercase">{sale.paymentMethod}</span>
-                  </div>
-                  <span className="text-xs font-black text-emerald-600 dark:text-emerald-400">
-                    +{formatCurrency(sale.amount, currency)}
-                  </span>
-                </div>
-              ))
-            )}
-          </div>
-        </div>
-
-        {/* Expenses List */}
-        <div className="bg-white dark:bg-slate-900 rounded-2xl p-3.5 border border-slate-200/80 dark:border-slate-800 shadow-xs">
-          <div className="flex items-center justify-between mb-3">
-            <div className="flex items-center gap-2">
-              <div className="p-1.5 rounded-lg bg-rose-50 dark:bg-rose-950 text-rose-600">
-                <TrendingDown className="w-4 h-4" />
-              </div>
-              <h3 className="font-bold text-slate-900 dark:text-white text-sm">Recent Expense Outflows</h3>
-            </div>
-            <Link href="/expenses" className="text-xs font-bold text-blue-600 hover:underline flex items-center gap-1">
-              <span>View All</span>
-              <ArrowRight className="w-3 h-3" />
-            </Link>
-          </div>
-
-          <div className="space-y-2">
-            {recentExpenses.length === 0 ? (
-              <p className="text-xs text-slate-400 text-center py-4">No expenses recorded today yet.</p>
-            ) : (
-              recentExpenses.slice(0, 4).map((exp) => (
-                <div key={exp.id} className="flex items-center justify-between p-2.5 rounded-xl bg-slate-50 dark:bg-slate-800/50">
-                  <div>
-                    <p className="text-xs font-bold text-slate-900 dark:text-white">{exp.description || exp.category}</p>
-                    <div className="flex items-center gap-1.5">
-                      <span className="text-[9px] font-bold px-1.5 py-0.2 rounded bg-rose-100 dark:bg-rose-950 text-rose-700 dark:text-rose-400">
-                        {exp.category}
-                      </span>
-                      <span className="text-[10px] text-slate-400 uppercase">{exp.paymentMethod}</span>
-                    </div>
-                  </div>
-                  <span className="text-xs font-black text-rose-600 dark:text-rose-400">
-                    -{formatCurrency(exp.amount, currency)}
-                  </span>
-                </div>
-              ))
-            )}
-          </div>
-        </div>
-      </div>
-
+      {/* Opening Balance Modal */}
       <OpeningBalanceModal
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}

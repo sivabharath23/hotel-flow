@@ -2,16 +2,16 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { LayoutDashboard, TrendingUp, TrendingDown, BarChart3, User, Lock } from "lucide-react";
+import { LayoutDashboard, TrendingUp, TrendingDown, BarChart3, User, Lock, Coins } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 const NAV_ITEMS = [
   { label: "Dashboard", href: "/dashboard", icon: LayoutDashboard },
   { label: "Sales", href: "/sales", icon: TrendingUp },
   { label: "Expenses", href: "/expenses", icon: TrendingDown },
+  { label: "Capital", href: "/investments", icon: Coins },
   { label: "Closing", href: "/closing", icon: Lock },
   { label: "Reports", href: "/reports", icon: BarChart3 },
-  { label: "Profile", href: "/profile", icon: User },
 ];
 
 export function BottomNav() {
