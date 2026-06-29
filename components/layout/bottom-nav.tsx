@@ -18,28 +18,27 @@ export function BottomNav() {
   const pathname = usePathname();
 
   return (
-    <div className="md:hidden fixed bottom-0 left-0 right-0 z-50 bg-white/80 dark:bg-slate-900/80 backdrop-blur-lg border-t border-slate-200/60 dark:border-slate-800 px-2 py-2 shadow-lg">
-      <nav className="flex justify-around items-center">
+    <div className="md:hidden fixed bottom-0 left-0 right-0 z-50 bg-white/90 dark:bg-slate-900/90 backdrop-blur-xl border-t border-slate-200/80 dark:border-slate-800/80 px-2 pt-2 pb-5 shadow-2xl">
+      <nav className="flex items-center justify-between gap-1 max-w-md mx-auto">
         {NAV_ITEMS.map((item) => {
           const Icon = item.icon;
-          const isActive = pathname === item.href;
+          const isActive = pathname === item.href || pathname.startsWith(item.href + "/");
 
           return (
             <Link
               key={item.href}
               href={item.href}
               className={cn(
-                "flex flex-col items-center justify-center py-1 px-2 rounded-xl transition-all duration-200 relative",
+                "flex-1 min-h-[48px] py-1.5 px-1 rounded-2xl flex flex-col items-center justify-center transition-all duration-200 relative active:scale-95 touch-manipulation",
                 isActive
-                  ? "text-blue-600 dark:text-blue-400 font-bold scale-105"
-                  : "text-slate-500 dark:text-slate-400 hover:text-slate-800 dark:hover:text-slate-200 font-medium"
+                  ? "bg-blue-50 dark:bg-blue-950/70 text-blue-600 dark:text-blue-400 font-bold shadow-xs"
+                  : "text-slate-500 dark:text-slate-400 hover:text-slate-800 dark:hover:text-slate-200 font-medium hover:bg-slate-100/50 dark:hover:bg-slate-800/40"
               )}
             >
-              <Icon className={cn("w-5 h-5 mb-0.5 transition-transform", isActive && "stroke-[2.5]")} />
-              <span className="text-[11px] tracking-tight">{item.label}</span>
-              {isActive && (
-                <span className="absolute -bottom-1 w-1.5 h-1.5 bg-blue-600 dark:bg-blue-400 rounded-full" />
-              )}
+              <Icon className={cn("w-5 h-5 mb-0.5 shrink-0 transition-transform", isActive ? "stroke-[2.5px] scale-110" : "stroke-2")} />
+              <span className="text-[10px] leading-tight tracking-tight font-semibold truncate max-w-full px-0.5">
+                {item.label}
+              </span>
             </Link>
           );
         })}
