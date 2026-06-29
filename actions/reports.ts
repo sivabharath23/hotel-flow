@@ -38,7 +38,7 @@ export async function getReportData(range: "today" | "yesterday" | "7days" | "30
       startDate = startOfDay(today);
   }
 
-  const [sales, expenses, openingBalances, closingBalances] = await Promise.all([
+  const [sales, expenses, investments] = await Promise.all([
     prisma.sale.findMany({
       where: {
         hotelId: session.hotelId,
@@ -53,38 +53,42 @@ export async function getReportData(range: "today" | "yesterday" | "7days" | "30
       },
       orderBy: { createdAt: "asc" },
     }),
-    prisma.openingBalance.findMany({
+    prisma.investment.findMany({
       where: {
         hotelId: session.hotelId,
+        createdAt: { gte: startDate, lte: endDate },
       },
-    }),
-    prisma.closingBalance.findMany({
-      where: {
-        hotelId: session.hotelId,
-      },
+      orderBy: { createdAt: "asc" },
     }),
   ]);
 
   const totalSales = sales.reduce((sum, s) => sum + s.amount, 0);
   const totalExpenses = expenses.reduce((sum, e) => sum + e.amount, 0);
+  const totalInvestments = investments.reduce((sum, i) => sum + i.amount, 0);
   const profit = totalSales - totalExpenses;
   const roi = totalExpenses > 0 ? Number(((profit / totalExpenses) * 100).toFixed(2)) : (profit > 0 ? 100 : 0);
 
   // Group by date for chart trends
-  const dailyMap: Record<string, { date: string; sales: number; expenses: number; profit: number }> = {};
+  const dailyMap: Record<string, { date: string; sales: number; expenses: number; investments: number; profit: number }> = {};
 
   sales.forEach((s) => {
     const d = formatDateString(s.createdAt);
-    if (!dailyMap[d]) dailyMap[d] = { date: d, sales: 0, expenses: 0, profit: 0 };
+    if (!dailyMap[d]) dailyMap[d] = { date: d, sales: 0, expenses: 0, investments: 0, profit: 0 };
     dailyMap[d].sales += s.amount;
     dailyMap[d].profit += s.amount;
   });
 
   expenses.forEach((e) => {
     const d = formatDateString(e.createdAt);
-    if (!dailyMap[d]) dailyMap[d] = { date: d, sales: 0, expenses: 0, profit: 0 };
+    if (!dailyMap[d]) dailyMap[d] = { date: d, sales: 0, expenses: 0, investments: 0, profit: 0 };
     dailyMap[d].expenses += e.amount;
     dailyMap[d].profit -= e.amount;
+  });
+
+  investments.forEach((i) => {
+    const d = formatDateString(i.createdAt);
+    if (!dailyMap[d]) dailyMap[d] = { date: d, sales: 0, expenses: 0, investments: 0, profit: 0 };
+    dailyMap[d].investments += i.amount;
   });
 
   const dailyTrends = Object.values(dailyMap).sort((a, b) => a.date.localeCompare(b.date));
@@ -104,14 +108,17 @@ export async function getReportData(range: "today" | "yesterday" | "7days" | "30
     summary: {
       totalSales,
       totalExpenses,
+      totalInvestments,
       profit,
       roi,
       salesCount: sales.length,
       expensesCount: expenses.length,
+      investmentsCount: investments.length,
     },
     dailyTrends,
     expenseBreakdown,
     sales,
     expenses,
+    investments,
   };
 }

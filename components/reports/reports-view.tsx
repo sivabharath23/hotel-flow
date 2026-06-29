@@ -52,9 +52,10 @@ export function ReportsView({ initialData, currency }: ReportsViewProps) {
 
   const exportToExcel = () => {
     try {
-      const summary = reportData?.summary || { totalSales: 0, totalExpenses: 0, profit: 0, roi: 0 };
+      const summary = reportData?.summary || { totalSales: 0, totalExpenses: 0, totalInvestments: 0, profit: 0, roi: 0 };
       const sales = reportData?.sales || [];
       const expenses = reportData?.expenses || [];
+      const investments = reportData?.investments || [];
 
       const wb = XLSX.utils.book_new();
 
@@ -66,6 +67,7 @@ export function ReportsView({ initialData, currency }: ReportsViewProps) {
         ["SUMMARY METRICS", ""],
         ["Total Sales", summary.totalSales],
         ["Total Expenses", summary.totalExpenses],
+        ["Total Capital Investments", summary.totalInvestments || 0],
         ["Net Profit", summary.profit],
         ["ROI %", `${summary.roi}%`],
       ];
@@ -95,6 +97,18 @@ export function ReportsView({ initialData, currency }: ReportsViewProps) {
       }));
       const expensesWs = XLSX.utils.json_to_sheet(expensesData.length > 0 ? expensesData : [{ "Status": "No expenses recorded" }]);
       XLSX.utils.book_append_sheet(wb, expensesWs, "Expenses");
+
+      // Investments Sheet
+      const investmentsData = investments.map((i: any) => ({
+        "Investment ID": i.id,
+        "Date & Time": new Date(i.createdAt).toLocaleString(),
+        "Amount": i.amount,
+        "Source": i.source,
+        "Payment Method": i.paymentMethod,
+        "Description": i.description || "",
+      }));
+      const investmentsWs = XLSX.utils.json_to_sheet(investmentsData.length > 0 ? investmentsData : [{ "Status": "No investments recorded" }]);
+      XLSX.utils.book_append_sheet(wb, investmentsWs, "Investments");
 
       const filename = `HotelFlow_Financial_Report_${range}_${new Date().toISOString().split("T")[0]}.xlsx`;
       XLSX.writeFile(wb, filename);
