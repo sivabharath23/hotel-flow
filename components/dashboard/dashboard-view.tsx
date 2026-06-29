@@ -179,7 +179,7 @@ export function DashboardView({ financials, closingInfo, currency, recentSales, 
           title="ROI %"
           subtitle="Return on Investment"
           amount={financials.roi}
-          currencySymbol="%"
+          isCurrency={false}
           icon={PieChart}
           colorScheme={financials.roi >= 0 ? "blue" : "rose"}
           trendText="Margin Return Rate"
