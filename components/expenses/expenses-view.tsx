@@ -22,7 +22,9 @@ interface ExpensesViewProps {
 
 const CATEGORIES = [
   "Vegetables",
-  "Milk",
+  "Groceries",
+  "Water Can",
+  "Batter",
   "Gas",
   "Chicken",
   "Salary",

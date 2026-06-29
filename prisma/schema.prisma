@@ -49,7 +49,7 @@ model Expense {
   hotelId       String
   hotel         Hotel    @relation(fields: [hotelId], references: [id], onDelete: Cascade)
   amount        Float
-  category      String   // VEGETABLES, MILK, GAS, CHICKEN, SALARY, ELECTRICITY, MISC
+  category      String   // VEGETABLES, GROCERIES, WATER_CAN, BATTER, GAS, CHICKEN, SALARY, ELECTRICITY, MISC
   paymentMethod String   // CASH, UPI, CARD, BANK
   description   String?
   createdAt     DateTime @default(now())

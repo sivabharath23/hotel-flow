@@ -56,7 +56,7 @@ async function main() {
   await prisma.expense.createMany({
     data: [
       { hotelId: hotel.id, amount: 1200, category: "VEGETABLES", paymentMethod: "CASH", description: "Fresh Market Produce" },
-      { hotelId: hotel.id, amount: 450, category: "MILK", paymentMethod: "UPI", description: "Daily Dairy Supply" },
+      { hotelId: hotel.id, amount: 450, category: "Water Can", paymentMethod: "UPI", description: "Drinking Water Supply" },
       { hotelId: hotel.id, amount: 900, category: "GAS", paymentMethod: "BANK", description: "Commercial Cooking Gas Cylinder" },
     ],
   });
