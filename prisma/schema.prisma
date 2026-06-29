@@ -1,0 +1,99 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = "file:./dev.db"
+}
+
+model Hotel {
+  id              String           @id @default(cuid())
+  name            String
+  owner           String
+  phone           String
+  email           String           @unique
+  password        String
+  address         String
+  city            String
+  state           String
+  gst             String?
+  hotelType       String           // Restaurant, Tea Shop, Cafe, Hotel, Lodge, Guest House
+  logoUrl         String?          // URL or Base64 string for hotel profile photo
+  currency        String           @default("INR")
+  createdAt       DateTime         @default(now())
+  updatedAt       DateTime         @updatedAt
+  sales           Sale[]
+  expenses        Expense[]
+  openingBalances OpeningBalance[]
+  closingBalances ClosingBalance[]
+  dailySummaries  DailySummary[]
+}
+
+model Sale {
+  id            String   @id @default(cuid())
+  hotelId       String
+  hotel         Hotel    @relation(fields: [hotelId], references: [id], onDelete: Cascade)
+  amount        Float
+  paymentMethod String   // CASH, UPI, CARD, BANK
+  description   String?
+  notes         String?
+  createdAt     DateTime @default(now())
+
+  @@index([hotelId, createdAt])
+}
+
+model Expense {
+  id            String   @id @default(cuid())
+  hotelId       String
+  hotel         Hotel    @relation(fields: [hotelId], references: [id], onDelete: Cascade)
+  amount        Float
+  category      String   // VEGETABLES, MILK, GAS, CHICKEN, SALARY, ELECTRICITY, MISC
+  paymentMethod String   // CASH, UPI, CARD, BANK
+  description   String?
+  createdAt     DateTime @default(now())
+
+  @@index([hotelId, createdAt])
+}
+
+model OpeningBalance {
+  id        String   @id @default(cuid())
+  hotelId   String
+  hotel     Hotel    @relation(fields: [hotelId], references: [id], onDelete: Cascade)
+  date      String   // Format: YYYY-MM-DD
+  amount    Float
+  isLocked  Boolean  @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([hotelId, date])
+}
+
+model ClosingBalance {
+  id           String   @id @default(cuid())
+  hotelId      String
+  hotel        Hotel    @relation(fields: [hotelId], references: [id], onDelete: Cascade)
+  date         String   // Format: YYYY-MM-DD
+  expectedCash Float
+  actualCash   Float
+  difference   Float
+  status       String   // EXACT, SHORTAGE, OVERAGE
+  notes        String?
+  createdAt    DateTime @default(now())
+
+  @@unique([hotelId, date])
+}
+
+model DailySummary {
+  id        String   @id @default(cuid())
+  hotelId   String
+  hotel     Hotel    @relation(fields: [hotelId], references: [id], onDelete: Cascade)
+  date      String   // Format: YYYY-MM-DD
+  sales     Float
+  expenses  Float
+  profit    Float
+  roi       Float
+  updatedAt DateTime @updatedAt
+
+  @@unique([hotelId, date])
+}
