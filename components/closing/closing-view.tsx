@@ -4,7 +4,7 @@ import { useState } from "react";
 import { recordClosingBalance } from "@/actions/balances";
 import { formatCurrency } from "@/lib/utils";
 import { toast } from "sonner";
-import { Lock, AlertTriangle, CheckCircle, Calculator, Info } from "lucide-react";
+import { Lock, AlertTriangle, CheckCircle, Calculator, Info, Edit3, X, Check } from "lucide-react";
 
 interface ClosingViewProps {
   expectedCash: number;
@@ -20,12 +20,27 @@ interface ClosingViewProps {
 }
 
 export function ClosingView({ expectedCash, existingClosing, currency }: ClosingViewProps) {
-  const [actualCashInput, setActualCashInput] = useState("");
-  const [notes, setNotes] = useState("");
+  const [isEditing, setIsEditing] = useState(false);
+  const [actualCashInput, setActualCashInput] = useState(
+    existingClosing ? String(existingClosing.actualCash) : ""
+  );
+  const [notes, setNotes] = useState(existingClosing?.notes || "");
   const [loading, setLoading] = useState(false);
 
   const actualCashNum = parseFloat(actualCashInput) || 0;
   const difference = actualCashNum - expectedCash;
+
+  const handleStartEdit = () => {
+    if (existingClosing) {
+      setActualCashInput(String(existingClosing.actualCash));
+      setNotes(existingClosing.notes || "");
+    }
+    setIsEditing(true);
+  };
+
+  const handleCancelEdit = () => {
+    setIsEditing(false);
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -41,7 +56,8 @@ export function ClosingView({ expectedCash, existingClosing, currency }: Closing
     if (res.error) {
       toast.error(res.error);
     } else {
-      toast.success("End-of-day cash closing submitted successfully!");
+      toast.success(existingClosing ? "Day closing entry updated successfully!" : "End-of-day cash closing submitted successfully!");
+      setIsEditing(false);
     }
   };
 
@@ -49,33 +65,54 @@ export function ClosingView({ expectedCash, existingClosing, currency }: Closing
     <div className="max-w-3xl mx-auto space-y-6 animate-in fade-in duration-300">
       {/* Top Card */}
       <div className="bg-white dark:bg-slate-900 rounded-3xl p-4 md:p-6 border border-slate-200/80 dark:border-slate-800 shadow-card">
-        <div className="flex items-center gap-3.5 mb-6">
-          <div className="p-3.5 rounded-2xl bg-purple-50 dark:bg-purple-950 text-purple-600 dark:text-purple-400">
-            <Lock className="w-7 h-7" />
+        <div className="flex items-center justify-between gap-3 mb-6">
+          <div className="flex items-center gap-3.5">
+            <div className="p-3.5 rounded-2xl bg-purple-50 dark:bg-purple-950 text-purple-600 dark:text-purple-400">
+              <Lock className="w-7 h-7" />
+            </div>
+            <div>
+              <h2 className="text-xl md:text-2xl font-black text-slate-900 dark:text-white">
+                End-of-Day Cash Reconciliation
+              </h2>
+              <p className="text-xs md:text-sm text-slate-500">
+                Audit actual drawer cash against expected register calculations
+              </p>
+            </div>
           </div>
-          <div>
-            <h2 className="text-xl md:text-2xl font-black text-slate-900 dark:text-white">
-              End-of-Day Cash Reconciliation
-            </h2>
-            <p className="text-xs md:text-sm text-slate-500">
-              Audit actual drawer cash against expected register calculations
-            </p>
-          </div>
+
+          {existingClosing && !isEditing && (
+            <button
+              onClick={handleStartEdit}
+              className="py-2 px-3.5 rounded-xl bg-purple-50 dark:bg-purple-950/60 text-purple-600 dark:text-purple-400 font-bold text-xs hover:bg-purple-100 transition-colors flex items-center gap-1.5 shrink-0"
+            >
+              <Edit3 className="w-4 h-4" />
+              <span>Edit Closing</span>
+            </button>
+          )}
         </div>
 
-        {existingClosing ? (
+        {existingClosing && !isEditing ? (
           /* Already Closed View */
           <div className="space-y-6">
-            <div className="p-4 rounded-2xl bg-emerald-50 dark:bg-emerald-950/40 border border-emerald-200 dark:border-emerald-900 flex items-center gap-3">
-              <CheckCircle className="w-6 h-6 text-emerald-600 shrink-0" />
-              <div>
-                <h4 className="font-bold text-emerald-900 dark:text-emerald-300 text-sm">
-                  Day Closing Completed
-                </h4>
-                <p className="text-xs text-emerald-700 dark:text-emerald-400">
-                  Daily register was reconciled on {new Date(existingClosing.createdAt).toLocaleTimeString()}
-                </p>
+            <div className="p-4 rounded-2xl bg-emerald-50 dark:bg-emerald-950/40 border border-emerald-200 dark:border-emerald-900 flex items-center justify-between gap-3">
+              <div className="flex items-center gap-3">
+                <CheckCircle className="w-6 h-6 text-emerald-600 shrink-0" />
+                <div>
+                  <h4 className="font-bold text-emerald-900 dark:text-emerald-300 text-sm">
+                    Day Closing Completed
+                  </h4>
+                  <p className="text-xs text-emerald-700 dark:text-emerald-400">
+                    Daily register was reconciled on {new Date(existingClosing.createdAt).toLocaleTimeString()}
+                  </p>
+                </div>
               </div>
+              <button
+                onClick={handleStartEdit}
+                className="py-1.5 px-3 rounded-lg bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs shadow-xs transition-colors flex items-center gap-1 shrink-0"
+              >
+                <Edit3 className="w-3.5 h-3.5" />
+                <span>Update Count</span>
+              </button>
             </div>
 
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
@@ -118,7 +155,7 @@ export function ClosingView({ expectedCash, existingClosing, currency }: Closing
             )}
           </div>
         ) : (
-          /* Form View to Perform Closing */
+          /* Form View to Perform or Edit Closing */
           <form onSubmit={handleSubmit} className="space-y-6">
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 p-4 rounded-2xl bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700">
               <div>
@@ -176,21 +213,27 @@ export function ClosingView({ expectedCash, existingClosing, currency }: Closing
               />
             </div>
 
-            <div className="p-4 rounded-2xl bg-amber-50 dark:bg-amber-950/30 border border-amber-200 dark:border-amber-900/50 flex items-start gap-3">
-              <Info className="w-5 h-5 text-amber-600 shrink-0 mt-0.5" />
-              <p className="text-xs text-amber-800 dark:text-amber-300 font-medium">
-                Submitting day closing locks today's register entries. You will not be able to submit closing twice for today.
-              </p>
-            </div>
+            <div className="flex items-center gap-3 pt-2">
+              {existingClosing && (
+                <button
+                  type="button"
+                  onClick={handleCancelEdit}
+                  className="flex-1 py-3.5 px-5 rounded-2xl font-bold text-sm bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:bg-slate-200 transition-all flex items-center justify-center gap-2"
+                >
+                  <X className="w-4 h-4" />
+                  <span>Cancel Edit</span>
+                </button>
+              )}
 
-            <button
-              type="submit"
-              disabled={loading}
-              className="w-full py-4 px-6 rounded-2xl font-bold text-base bg-purple-600 text-white shadow-lg shadow-purple-500/25 hover:bg-purple-700 active:scale-[0.98] transition-all flex items-center justify-center gap-2 disabled:opacity-50"
-            >
-              <Lock className="w-5 h-5" />
-              <span>{loading ? "Reconciling Register..." : "Submit End-of-Day Closing"}</span>
-            </button>
+              <button
+                type="submit"
+                disabled={loading}
+                className="flex-1 py-3.5 px-6 rounded-2xl font-bold text-base bg-purple-600 text-white shadow-lg shadow-purple-500/25 hover:bg-purple-700 active:scale-[0.98] transition-all flex items-center justify-center gap-2 disabled:opacity-50"
+              >
+                <Check className="w-5 h-5" />
+                <span>{loading ? "Saving Reconciled Balance..." : existingClosing ? "Save Updated Closing" : "Submit End-of-Day Closing"}</span>
+              </button>
+            </div>
           </form>
         )}
       </div>

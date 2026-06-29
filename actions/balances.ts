@@ -21,15 +21,6 @@ export async function setOpeningBalance(amount: number, dateStr?: string) {
     return { error: "Cannot modify opening balance after day closing is submitted." };
   }
 
-  // Check existing opening balance
-  const existingOpening = await prisma.openingBalance.findUnique({
-    where: { hotelId_date: { hotelId: session.hotelId, date: targetDate } },
-  });
-
-  if (existingOpening && existingOpening.isLocked) {
-    // Admin unlock logic could be checked here
-  }
-
   await prisma.openingBalance.upsert({
     where: { hotelId_date: { hotelId: session.hotelId, date: targetDate } },
     update: { amount, isLocked: true },
@@ -69,15 +60,6 @@ export async function recordClosingBalance(actualCash: number, notes?: string, d
 
   const targetDate = dateStr || formatDateString(new Date());
 
-  // Check if already closed today
-  const existingClosing = await prisma.closingBalance.findUnique({
-    where: { hotelId_date: { hotelId: session.hotelId, date: targetDate } },
-  });
-
-  if (existingClosing) {
-    return { error: "Day closing has already been completed for today and cannot be submitted twice." };
-  }
-
   // Fetch today's financial data to calculate expected cash
   const startOfDay = new Date(targetDate + "T00:00:00.000Z");
   const endOfDay = new Date(targetDate + "T23:59:59.999Z");
@@ -109,8 +91,16 @@ export async function recordClosingBalance(actualCash: number, notes?: string, d
   if (difference < 0) status = "SHORTAGE";
   if (difference > 0) status = "OVERAGE";
 
-  const closing = await prisma.closingBalance.create({
-    data: {
+  const closing = await prisma.closingBalance.upsert({
+    where: { hotelId_date: { hotelId: session.hotelId, date: targetDate } },
+    update: {
+      expectedCash,
+      actualCash,
+      difference,
+      status,
+      notes: notes || null,
+    },
+    create: {
       hotelId: session.hotelId,
       date: targetDate,
       expectedCash,
