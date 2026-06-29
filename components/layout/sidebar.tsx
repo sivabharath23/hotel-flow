@@ -28,7 +28,11 @@ const NAV_ITEMS = [
   { label: "Hotel Profile", href: "/profile", icon: User },
 ];
 
-export function Sidebar() {
+interface SidebarProps {
+  logoUrl?: string | null;
+}
+
+export function Sidebar({ logoUrl }: SidebarProps) {
   const pathname = usePathname();
   const [isCollapsed, setIsCollapsed] = useState(false);
   const [showLogoutModal, setShowLogoutModal] = useState(false);
@@ -50,7 +54,7 @@ export function Sidebar() {
         <div>
           {/* Header with Logo & Menu / X toggle icon */}
           <div className={cn("py-1.5 mb-4 flex items-center justify-between border-b border-slate-100 dark:border-slate-800 pb-3", isCollapsed && "flex-col gap-2 px-0")}>
-            <HotelFlowLogo size="sm" showText={!isCollapsed} />
+            <HotelFlowLogo size="sm" showText={!isCollapsed} logoUrl={logoUrl} />
             <button
               onClick={() => setIsCollapsed(!isCollapsed)}
               className="p-1.5 rounded-xl bg-blue-50 dark:bg-blue-950/60 text-blue-600 dark:text-blue-400 hover:bg-blue-100 dark:hover:bg-blue-900 transition-all shadow-xs flex items-center justify-center shrink-0 border border-blue-200/50 dark:border-blue-800/50"

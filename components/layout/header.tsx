@@ -7,16 +7,21 @@ import { format } from "date-fns";
 interface HeaderProps {
   hotelName?: string;
   hotelType?: string;
+  logoUrl?: string | null;
 }
 
-export function Header({ hotelName = "My Hotel", hotelType = "Hotel" }: HeaderProps) {
+export function Header({ hotelName = "My Hotel", hotelType = "Hotel", logoUrl }: HeaderProps) {
   const { theme, setTheme } = useTheme();
 
   return (
     <header className="sticky top-0 z-40 bg-white/80 dark:bg-slate-900/80 backdrop-blur-md border-b border-slate-200/80 dark:border-slate-800 px-4 md:px-6 py-2.5 flex items-center justify-between shadow-xs">
       <div className="flex items-center gap-3">
-        <div className="w-9 h-9 rounded-xl bg-blue-50 dark:bg-blue-950/50 text-blue-600 dark:text-blue-400 flex items-center justify-center font-bold shadow-xs border border-blue-100 dark:border-blue-900 shrink-0">
-          <Building2 className="w-4 h-4" />
+        <div className="w-9 h-9 rounded-xl bg-blue-50 dark:bg-blue-950/50 text-blue-600 dark:text-blue-400 flex items-center justify-center font-bold shadow-xs border border-blue-100 dark:border-blue-900 shrink-0 overflow-hidden">
+          {logoUrl ? (
+            <img src={logoUrl} alt={hotelName} className="w-full h-full object-cover" />
+          ) : (
+            <Building2 className="w-4 h-4" />
+          )}
         </div>
         <div>
           <h1 className="font-bold text-slate-900 dark:text-white text-sm md:text-base leading-tight">
