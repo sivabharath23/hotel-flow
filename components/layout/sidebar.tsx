@@ -51,7 +51,7 @@ export function Sidebar({ logoUrl, hotelName = "HotelFlow Register", ownerName }
     <>
       <aside
         className={cn(
-          "hidden md:flex flex-col bg-white dark:bg-slate-900 border-r border-slate-200/80 dark:border-slate-800 h-screen sticky top-0 relative z-40 transition-all duration-300 ease-in-out justify-between shadow-sm",
+          "hidden md:flex flex-col shrink-0 select-none bg-white dark:bg-slate-900 border-r border-slate-200/80 dark:border-slate-800 h-screen sticky top-0 relative z-40 transition-all duration-300 ease-in-out justify-between shadow-sm",
           isCollapsed ? "w-20" : "w-64"
         )}
       >

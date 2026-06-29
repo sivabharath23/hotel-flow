@@ -22,12 +22,14 @@ export default async function DashboardLayout({
   });
 
   return (
-    <div className="min-h-screen flex bg-slate-50 dark:bg-slate-950">
+    <div className="h-screen w-full flex overflow-hidden bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-slate-100">
       <Sidebar logoUrl={hotel?.logoUrl} hotelName={hotel?.name} ownerName={hotel?.owner} />
-      <div className="flex-1 flex flex-col min-w-0 pb-20 md:pb-6">
+      <div className="flex-1 flex flex-col h-full min-w-0 overflow-hidden relative">
         <Header hotelName={hotel?.name} hotelType={hotel?.hotelType} />
-        <main className="flex-1 p-3 md:p-5 max-w-7xl mx-auto w-full">
-          {children}
+        <main className="flex-1 overflow-y-auto p-3 md:p-5 pb-24 md:pb-8 scroll-smooth">
+          <div className="max-w-7xl mx-auto w-full space-y-5">
+            {children}
+          </div>
         </main>
         <BottomNav />
       </div>
