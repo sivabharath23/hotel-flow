@@ -80,15 +80,6 @@ export function ClosingView({ expectedCash, existingClosing, currency }: Closing
             </div>
           </div>
 
-          {existingClosing && !isEditing && (
-            <button
-              onClick={handleStartEdit}
-              className="py-2 px-3.5 rounded-xl bg-purple-50 dark:bg-purple-950/60 text-purple-600 dark:text-purple-400 font-bold text-xs hover:bg-purple-100 transition-colors flex items-center gap-1.5 shrink-0"
-            >
-              <Edit3 className="w-4 h-4" />
-              <span>Edit Closing</span>
-            </button>
-          )}
         </div>
 
         {existingClosing && !isEditing ? (
@@ -130,20 +121,19 @@ export function ClosingView({ expectedCash, existingClosing, currency }: Closing
                 </p>
               </div>
 
-              <div className={`p-4 rounded-2xl border ${
-                existingClosing.difference === 0
+              <div className={`p-4 rounded-2xl border ${existingClosing.difference === 0
                   ? "bg-emerald-50 text-emerald-900 border-emerald-200 dark:bg-emerald-950/30"
                   : existingClosing.difference < 0
-                  ? "bg-rose-50 text-rose-900 border-rose-200 dark:bg-rose-950/30"
-                  : "bg-amber-50 text-amber-900 border-amber-200 dark:bg-amber-950/30"
-              }`}>
+                    ? "bg-rose-50 text-rose-900 border-rose-200 dark:bg-rose-950/30"
+                    : "bg-amber-50 text-amber-900 border-amber-200 dark:bg-amber-950/30"
+                }`}>
                 <span className="text-xs font-semibold uppercase opacity-70">Variance Status</span>
                 <p className="text-xl font-black mt-1">
                   {existingClosing.difference === 0
                     ? "EXACT MATCH"
                     : existingClosing.difference < 0
-                    ? `SHORTAGE (${formatCurrency(Math.abs(existingClosing.difference), currency)})`
-                    : `OVERAGE (+${formatCurrency(existingClosing.difference, currency)})`}
+                      ? `SHORTAGE (${formatCurrency(Math.abs(existingClosing.difference), currency)})`
+                      : `OVERAGE (+${formatCurrency(existingClosing.difference, currency)})`}
                 </p>
               </div>
             </div>
@@ -168,16 +158,15 @@ export function ClosingView({ expectedCash, existingClosing, currency }: Closing
 
               <div>
                 <span className="text-xs font-semibold text-slate-400 uppercase tracking-wider">Live Variance Preview</span>
-                <p className={`text-2xl font-black mt-1 ${
-                  difference === 0 ? "text-slate-700 dark:text-slate-300" : difference < 0 ? "text-rose-600" : "text-amber-600"
-                }`}>
+                <p className={`text-2xl font-black mt-1 ${difference === 0 ? "text-slate-700 dark:text-slate-300" : difference < 0 ? "text-rose-600" : "text-amber-600"
+                  }`}>
                   {actualCashInput === ""
                     ? "—"
                     : difference === 0
-                    ? "₹0 (Exact)"
-                    : difference < 0
-                    ? `-${formatCurrency(Math.abs(difference), currency)} Shortage`
-                    : `+${formatCurrency(difference, currency)} Extra`}
+                      ? "₹0 (Exact)"
+                      : difference < 0
+                        ? `-${formatCurrency(Math.abs(difference), currency)} Shortage`
+                        : `+${formatCurrency(difference, currency)} Extra`}
                 </p>
               </div>
             </div>
